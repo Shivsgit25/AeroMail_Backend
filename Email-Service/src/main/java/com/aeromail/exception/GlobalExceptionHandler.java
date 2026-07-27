@@ -12,6 +12,15 @@ import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	
+	//Email not found exception
+	@ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<String> handleEmailNotFound(
+            EmailNotFoundException ex) {
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
 
 	
 	// Validation errors (@Valid)
@@ -33,6 +42,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(
             ConstraintViolationException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage()));
+    }
+    
+    
+ // Business logic exceptions
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(
+            IllegalStateException ex) {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

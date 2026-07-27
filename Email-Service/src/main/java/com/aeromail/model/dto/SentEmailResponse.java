@@ -3,6 +3,8 @@ package com.aeromail.model.dto;
 
 import java.time.LocalDateTime;
 
+import com.aeromail.model.enums.EmailStatus;
+
 import lombok.Data;
 
 @Data
@@ -13,7 +15,7 @@ public class SentEmailResponse {
 	private String toEmail;
 	private String subject;
 	private String message;
-	private String status;
+	private EmailStatus status;
 	private LocalDateTime sentAt;
 
 }

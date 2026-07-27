@@ -1,0 +1,45 @@
+=========================================
+AEROMAIL PROJECT ANALYSIS & ROADMAP
+=========================================
+
+1. CURRENT PROJECT CAPABILITIES
+-----------------------------------------
+Currently, the project is a single Spring Boot application (`Email-Service`) handling all core logic.
+- Tech Stack: Java 17, Spring Boot, Spring Data JPA, Java Mail Sender, MySQL, Lombok.
+- Core Features:
+  * Inbox & Sent Box: Fetching emails with built-in pagination support.
+  * Search: Keyword-based searching through both Inbox and Sent Box.
+  * Drafts Management: Users can save, update, view, and send draft emails.
+  * Status Tracking: Emails track statuses (DRAFT, PENDING, SENT, FAILED, DELIVERED).
+  * Filtering: Inbox filtering based on email status.
+
+2. EXISTING REST APIs
+-----------------------------------------
+- POST /email/save                : Send and save an email.
+- GET  /email/inbox/{toEmail}     : Retrieve inbox emails (with pagination & status filtering).
+- GET  /email/sent/{from}         : Retrieve sent emails (with pagination).
+- GET  /email/inbox/search/{to}   : Search inside the inbox.
+- GET  /email/sent/search/{from}  : Search inside sent emails.
+- POST /email/draft               : Save a new draft email.
+- PUT  /email/draft/{id}          : Update an existing draft email.
+- POST /email/draft/{id}/send     : Send a previously saved draft.
+- GET  /email/drafts/{fromEmail}  : Retrieve all drafts for a user.
+- GET  /email/test                : Basic testing endpoint.
+
+3. ROADMAP: MICROSERVICES ARCHITECTURE
+-----------------------------------------
+To transition from a monolithic app to microservices, consider the following structure:
+- API Gateway: A single entry point (e.g., Spring Cloud Gateway) to route client requests.
+- User/Auth Service: Manages user registration, profiles, and JWT authentication.
+- Email Core Service: Handles CRUD operations for emails, drafts, and folder management (Inbox, Sent, Trash).
+- Email Dispatch/Worker Service: Listens to a Message Queue (like RabbitMQ or Kafka) to asynchronously send emails via SMTP, ensuring high availability and retry mechanisms.
+- Notification Service: Uses WebSockets to push real-time alerts to the client when a new email arrives.
+
+4. ROADMAP: AI INTEGRATION FOR THE FUTURE
+-----------------------------------------
+To make your application "smart", consider adding these AI-driven features:
+- Smart Compose & Reply: Use LLMs (like OpenAI/Gemini) to suggest auto-completions and quick replies based on email context.
+- Email Summarization: Provide a "TL;DR" summary for long email threads.
+- Intelligent Spam/Phishing Detection: Use machine learning classifiers to flag suspicious emails or automatically route spam to a junk folder.
+- Auto-Categorization: Automatically categorize incoming emails into buckets like "Primary", "Promotions", "Social", or "Updates" using NLP.
+- Tone Checker: Analyze the draft's tone and offer suggestions to make it more professional, polite, or direct before sending.
